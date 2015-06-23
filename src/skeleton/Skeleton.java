@@ -29,7 +29,7 @@ public class Skeleton extends Thread{
 		
 		System.out.println("sending identity : " + ID);
 
-		oStream.print(ID);
+		oStream.print(ID + "\n");
 		oStream.flush();
 		System.out.println("sent");
 		

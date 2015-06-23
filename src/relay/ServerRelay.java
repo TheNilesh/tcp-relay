@@ -1,21 +1,20 @@
 package relay;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 class ServerRelay implements Runnable{
 	BufferedReader iStream;
-	BufferedWriter oStream;
+	PrintWriter oStream;
 	Relay rs;
 	Socket skltn;
 	
 	ServerRelay(Relay rs, Socket skltn) throws IOException {
 		iStream= new BufferedReader(new InputStreamReader(skltn.getInputStream()));
-		oStream= new BufferedWriter(new OutputStreamWriter(skltn.getOutputStream()));
+		oStream= new PrintWriter(skltn.getOutputStream());
 		this.rs=rs;
 		this.skltn=skltn;
 		new Thread(this).start();

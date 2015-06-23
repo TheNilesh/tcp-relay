@@ -35,7 +35,7 @@ public class Relay extends Thread{
 			clnt=new ServerSocket(cPort);
 			while(true){
 				Socket cl=clnt.accept();
-				LOG.info("Got a client connectiojhgjhbn");
+				LOG.info("Got a client connection");
 				ClientRelay cr=new ClientRelay(this,cl);	//client communicating relay
 			}
 		} catch (IOException e) {

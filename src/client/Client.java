@@ -32,6 +32,7 @@ public class Client extends Thread{
 				
 				System.out.println("sending:" + str);
 				oStream.print(str + "\n");
+				oStream.flush();
 				System.out.println("sent");
 				recvd=iStream.readLine();
 				System.out.println(recvd);
@@ -46,11 +47,8 @@ public class Client extends Thread{
 				
 			} catch (IOException e) {e.printStackTrace();}
 			
-		}while(str.equalsIgnoreCase("exit"));
+		}while(true);
 		
-		try {
-			s.close();
-		} catch (IOException e) {e.printStackTrace();}
 	}
 	
 	public static void main(String args[]) throws UnknownHostException, IOException{
