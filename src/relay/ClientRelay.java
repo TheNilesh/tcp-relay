@@ -26,6 +26,9 @@ class ClientRelay implements Runnable{
 				String str;
 				Relay.LOG.info("Waiting for client cmd");
 				str = iStream.readLine();
+				if(str==null){
+					break;//while out
+				}
 				
 				System.out.println(str);
 				
@@ -36,22 +39,22 @@ class ClientRelay implements Runnable{
 					String cmd[]=str.split(" ");
 					System.out.println("Connecting to " + cmd[1]);
 					Socket skltn=rs.relayedServers.get(cmd[1]);
+					
 					if(skltn==null){
 						System.out.println(cmd[1] + " is not available.");
 						oStream.print(cmd[1] + " not available " + "\n" );
+					}else{
+						PrintWriter bw=new PrintWriter(skltn.getOutputStream());
+						//?
+						
+						// start a dummy server to map
+						DummyServer ds=new DummyServer();
+						String tmpAddress=ds.getSocketAddress();
+						
+						bw.print("CONNECT_TO " + tmpAddress + "\n");		//ask skeleton to connect dummy server
+						oStream.print("CONNECT_TO " + tmpAddress  + "\n");		//ask client to connect dummy server
+						bw.flush();
 					}
-					
-					PrintWriter bw=new PrintWriter(skltn.getOutputStream());
-					//?
-					
-					// start a dummy server to map
-					DummyServer ds=new DummyServer();
-					String tmpAddress=ds.getSocketAddress();
-					
-					
-					bw.print("CONNECT_TO " + tmpAddress + "\n");		//ask skeleton to connect dummy server
-					oStream.print("CONNECT_TO " + tmpAddress  + "\n");		//ask client to connect dummy server
-					break;
 				}else{
 					oStream.print("Unknown Command" + "\n" );
 				}

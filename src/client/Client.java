@@ -10,11 +10,12 @@ import java.net.UnknownHostException;
 public class Client extends Thread{
 
 	private Socket s;
+	final String ip="127.0.0.1";
 	private PrintWriter oStream;
 	private BufferedReader iStream;
 	
 	Client() throws UnknownHostException, IOException{
-		s=new Socket("127.0.0.1",2025);
+		s=new Socket(ip,2025);
 		oStream= new PrintWriter(s.getOutputStream());
 		iStream= new BufferedReader(new InputStreamReader(s.getInputStream()));
 		new Thread(this).start();
@@ -25,25 +26,33 @@ public class Client extends Thread{
 
 		String str="nilesh";
 		String recvd=null;
-		//String[] cmd=null;
+		String[] cmd=null;
+		boolean notConnected=true;	//not connected to server, that means connected to relay.
 		do{
 			try {
-				str=br.readLine();
+				str=br.readLine();		//TODO: if connected to server, its reply might be multiline, this will read only first line
 				
-				System.out.println("sending:" + str);
+				//System.out.println("sending:" + str);
 				oStream.print(str + "\n");
 				oStream.flush();
-				System.out.println("sent");
+				//System.out.println("sent");
 				recvd=iStream.readLine();
 				System.out.println(recvd);
 				
-				/*
-				cmd=recvd.split(" ");
-				if(cmd[0].equals("CONNECT_TO")){
-					Socket s1=new Socket(cmd[1],Integer.parseInt(cmd[2]));//connection to Dummy Server
-
-					oStream.write("SUCCESS");
-				}*/
+				if(recvd.startsWith("CONNECT_TO ") && notConnected){
+					cmd=recvd.split(" ");
+					try{
+						Socket s1=new Socket(ip, Integer.parseInt(cmd[1]));//connection to Dummy Server
+						//modify stream so msg goes to server not to relay
+						oStream= new PrintWriter(s1.getOutputStream());
+						iStream= new BufferedReader(new InputStreamReader(s1.getInputStream()));
+						System.out.println("Connected to Server via Relay:" + cmd[1]);
+						s.close();
+					}catch(IOException ie){
+						System.out.println("Failed connecting Server");
+					}
+					//oStream.print("SUCCESS" + "\n");
+				}
 				
 			} catch (IOException e) {e.printStackTrace();}
 			

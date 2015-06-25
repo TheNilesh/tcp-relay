@@ -7,13 +7,14 @@ import java.net.Socket;
 public class DummyServer implements Runnable{
 
 	ServerSocket srv;
+	
 	DummyServer() throws IOException{
-		srv=new ServerSocket();
-		new Thread(this).start();
+			srv=new ServerSocket(4065);	//TODO:loop to ensure port number is free
+			new Thread(this).start();
 	}
 	
 	String getSocketAddress(){
-		return srv.getLocalSocketAddress().toString();
+		return "" + srv.getLocalPort();
 	}
 	
 	public void run(){
