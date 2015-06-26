@@ -27,38 +27,36 @@ public class Client extends Thread{
 		String str="nilesh";
 		String recvd=null;
 		String[] cmd=null;
-		boolean notConnected=true;	//not connected to server, that means connected to relay.
 		do{
 			try {
-				str=br.readLine();		//TODO: if connected to server, its reply might be multiline, this will read only first line
+				str=br.readLine();
 				
-				//System.out.println("sending:" + str);
 				oStream.print(str + "\n");
 				oStream.flush();
-				//System.out.println("sent");
+				if(str.equalsIgnoreCase("exit")){
+					break;
+				}
+
 				recvd=iStream.readLine();
 				System.out.println(recvd);
 				
-				if(recvd.startsWith("CONNECT_TO ") && notConnected){
+				if(recvd.startsWith("CONNECT_TO ")){
 					cmd=recvd.split(" ");
 					try{
-						Socket s1=new Socket(ip, Integer.parseInt(cmd[1]));//connection to Dummy Server
-						//modify stream so msg goes to server not to relay
-						oStream= new PrintWriter(s1.getOutputStream());
-						iStream= new BufferedReader(new InputStreamReader(s1.getInputStream()));
-						System.out.println("Connected to Server via Relay:" + cmd[1]);
-						s.close();
+						new Stub(ip, Integer.parseInt(cmd[1]));//connection to Dummy Server
+						System.out.println("Connected to Server via Relay.");
+						break;
 					}catch(IOException ie){
 						System.out.println("Failed connecting Server");
 					}
-					//oStream.print("SUCCESS" + "\n");
 				}
 				
 			} catch (IOException e) {e.printStackTrace();}
 			
 		}while(true);
 		
-	}
+		try {s.close();	} catch (IOException e) {e.printStackTrace();}
+	}//run
 	
 	public static void main(String args[]) throws UnknownHostException, IOException{
 		new Client();

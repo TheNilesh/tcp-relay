@@ -47,7 +47,8 @@ public class Skeleton extends Thread{
 					//Join both
 					new BridgedConnection(s1,s2).start();
 					new BridgedConnection(s2,s1).start();
-					oStream.print("SUCCESS");
+					//oStream.print("SUCCESS");
+					break;
 				}
 			} catch (IOException e) {e.printStackTrace();}
 			

@@ -21,7 +21,11 @@ public class BridgedConnection extends Thread {
                 os.write(i);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
+        	System.out.println("Bridge disconnected!");
+        	try {
+				s1.close();s2.close();
+			} catch (IOException e1) {}
         } 
     }
 

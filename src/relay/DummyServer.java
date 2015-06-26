@@ -9,8 +9,17 @@ public class DummyServer implements Runnable{
 	ServerSocket srv;
 	
 	DummyServer() throws IOException{
-			srv=new ServerSocket(4065);	//TODO:loop to ensure port number is free
-			new Thread(this).start();
+		int port=4000;
+		while(port<65535)
+		{
+			try{
+				srv=new ServerSocket(4065);	//TODO:loop to ensure port number is free
+				new Thread(this).start();
+				break;
+			}catch(IOException ie){
+				port++;
+			}
+		}
 	}
 	
 	String getSocketAddress(){
