@@ -12,6 +12,7 @@ Socket server;
 
 	Stub(String ip,int port) throws UnknownHostException, IOException{
 		server=new Socket(ip,port);
+		
 		new Thread(this).start();
 		asyncWrite();
 	}
@@ -21,7 +22,7 @@ Socket server;
 			BufferedReader iStream= new BufferedReader(new InputStreamReader(server.getInputStream()));
 			for (String line = iStream.readLine(); line != null; line = iStream.readLine()) {
 			       System.out.println(line);
-			    }
+			 }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

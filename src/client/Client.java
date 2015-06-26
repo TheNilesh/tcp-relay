@@ -27,6 +27,7 @@ public class Client extends Thread{
 		String str="nilesh";
 		String recvd=null;
 		String[] cmd=null;
+		
 		do{
 			try {
 				str=br.readLine();
@@ -43,9 +44,9 @@ public class Client extends Thread{
 				if(recvd.startsWith("CONNECT_TO ")){
 					cmd=recvd.split(" ");
 					try{
-						new Stub(ip, Integer.parseInt(cmd[1]));//connection to Dummy Server
 						System.out.println("Connected to Server via Relay.");
-						break;
+						new Stub(ip, Integer.parseInt(cmd[1]));//connection to Dummy Server
+						System.out.println("Disconnected.");
 					}catch(IOException ie){
 						System.out.println("Failed connecting Server");
 					}
